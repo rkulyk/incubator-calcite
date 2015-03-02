@@ -65,6 +65,7 @@ import org.apache.calcite.rex.RexShuttle;
 import org.apache.calcite.rex.RexSubQuery;
 import org.apache.calcite.rex.RexUtil;
 import org.apache.calcite.rex.RexVisitorImpl;
+import org.apache.calcite.schema.SchemaPlus;
 import org.apache.calcite.sql.SqlExplainLevel;
 import org.apache.calcite.sql.SqlKind;
 import org.apache.calcite.sql.SqlOperator;
@@ -2695,6 +2696,14 @@ public abstract class RelOptUtil {
 
       public RelRoot expandView(RelDataType rowType, String queryString,
           List<String> schemaPath, List<String> viewPath) {
+        throw new UnsupportedOperationException();
+      }
+
+      @Override public RelRoot expandView(
+          RelDataType rowType,
+          String queryString,
+          SchemaPlus rootSchema,
+          List<String> schemaPath) {
         throw new UnsupportedOperationException();
       }
     };
