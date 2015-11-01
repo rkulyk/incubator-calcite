@@ -220,6 +220,7 @@ public class SqlLiteral extends SqlNode {
       return (value instanceof Enum)
           || (value instanceof SqlSampleSpec);
     case MULTISET:
+    case MAP:
       return true;
     case INTEGER: // not allowed -- use Decimal
     case VARCHAR: // not allowed -- use Char

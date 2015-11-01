@@ -252,6 +252,8 @@ public class RexLiteral extends RexNode {
           && (((NlsString) value).getCollation() != null);
     case SYMBOL:
       return value instanceof Enum;
+    case MAP:
+      return value instanceof Map;
     case ROW:
     case MULTISET:
       return value instanceof List;
@@ -396,6 +398,9 @@ public class RexLiteral extends RexNode {
       break;
     case TIMESTAMP:
       printDatetime(pw, new ZonelessTimestamp(), value);
+      break;
+    case MAP:
+      pw.print(value.toString());
       break;
     case INTERVAL_YEAR:
     case INTERVAL_YEAR_MONTH:

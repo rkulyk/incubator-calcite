@@ -158,6 +158,10 @@ public class SqlNodeToRexConverterImpl implements SqlNodeToRexConverter {
           BigDecimal.valueOf(l),
           sqlIntervalQualifier);
     default:
+      if (literal instanceof SqlRexConvertlet) {
+        return ((SqlRexConvertlet) literal).convertCall(cx, null);
+      }
+
       throw Util.unexpected(literal.getTypeName());
     }
   }
