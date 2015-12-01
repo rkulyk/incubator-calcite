@@ -73,6 +73,12 @@ public interface RelDataTypeSystem {
    * argument type.
    */
   RelDataType deriveSumType(RelDataTypeFactory typeFactory, RelDataType argumentType);
+
+  /**
+   * Returns the return type of AVG aggregate function inferred from its
+   * argument type.
+   */
+  RelDataType deriveAvgType(RelDataTypeFactory typeFactory, RelDataType argumentType);
 }
 
 // End RelDataTypeSystem.java

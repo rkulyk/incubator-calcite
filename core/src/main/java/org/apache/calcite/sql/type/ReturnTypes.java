@@ -775,6 +775,28 @@ public abstract class ReturnTypes {
               .deriveSumType(typeFactory, opBinding.getOperandType(0));
         }
       };
+
+  /**
+   * Type-inference strategy for AVG aggregate function inferred from the
+   * operand type, and nullable if the call occurs within a "GROUP BY ()"
+   * query. E.g. in "select avg(x) as s from empty", s may be null. Also,
+   * with the default implementation of RelDataTypeSystem, s has the same
+   * type name as x.
+   */
+  public static final SqlReturnTypeInference AGG_AVG =
+      new SqlReturnTypeInference() {
+        @Override public RelDataType
+        inferReturnType(SqlOperatorBinding opBinding) {
+          final RelDataTypeFactory typeFactory = opBinding.getTypeFactory();
+          final RelDataType type = typeFactory.getTypeSystem()
+              .deriveAvgType(typeFactory, opBinding.getOperandType(0));
+          if (opBinding.getGroupCount() == 0 || opBinding.hasFilter()) {
+            return typeFactory.createTypeWithNullability(type, true);
+          } else {
+            return type;
+          }
+        }
+      };
 }
 
 // End ReturnTypes.java

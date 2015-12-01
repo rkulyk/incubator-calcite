@@ -166,6 +166,11 @@ public abstract class RelDataTypeSystemImpl implements RelDataTypeSystem {
       RelDataTypeFactory typeFactory, RelDataType argumentType) {
     return argumentType;
   }
+
+  public RelDataType deriveAvgType(
+      RelDataTypeFactory typeFactory, RelDataType argumentType) {
+    return argumentType;
+  }
 }
 
 // End RelDataTypeSystemImpl.java
