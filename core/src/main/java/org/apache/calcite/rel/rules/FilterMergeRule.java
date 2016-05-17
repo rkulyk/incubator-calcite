@@ -31,6 +31,9 @@ import org.apache.calcite.rex.RexUtil;
  * {@link org.apache.calcite.rel.logical.LogicalFilter}s.
  */
 public class FilterMergeRule extends RelOptRule {
+  private static final org.slf4j.Logger LOGGER =
+      org.slf4j.LoggerFactory.getLogger(FilterMergeRule.class);
+
   public static final FilterMergeRule INSTANCE =
       new FilterMergeRule(RelFactories.DEFAULT_FILTER_FACTORY);
 
@@ -54,6 +57,19 @@ public class FilterMergeRule extends RelOptRule {
   public void onMatch(RelOptRuleCall call) {
     final Filter topFilter = call.rel(0);
     final Filter bottomFilter = call.rel(1);
+
+    LOGGER.debug(" Merging Filters");
+    LOGGER.debug(" topFilter : {}", topFilter);
+    LOGGER.debug(" topFilter's # of fields {}, rowType{}",
+        topFilter.getRowType().getFieldCount(), topFilter.getRowType());
+    LOGGER.debug(" topFilter input's # of fields {}, rowType{}",
+        topFilter.getInput().getRowType().getFieldCount(), topFilter.getInput().getRowType());
+
+    LOGGER.debug(" bottomFilter : {}", topFilter);
+    LOGGER.debug(" bottomFilter's # of fields {}, rowType{}",
+        bottomFilter.getRowType().getFieldCount(), bottomFilter.getRowType());
+    LOGGER.debug(" bottomFilter input's # of fields {}, rowType{}",
+        bottomFilter.getInput().getRowType().getFieldCount(), bottomFilter.getInput().getRowType());
 
     // use RexPrograms to merge the two FilterRels into a single program
     // so we can convert the two LogicalFilter conditions to directly

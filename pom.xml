@@ -50,6 +50,8 @@ limitations under the License.
     <top.dir>${project.basedir}</top.dir>
     <version.major>1</version.major>
     <version.minor>4</version.minor>
+
+    <slf4j.version>1.7.13</slf4j.version>
   </properties>
 
   <issueManagement>
@@ -292,6 +294,16 @@ limitations under the License.
         <groupId>org.openjdk.jmh</groupId>
         <artifactId>jmh-generator-annprocess</artifactId>
         <version>0.7.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j.version}</version>
       </dependency>
       <dependency>
         <groupId>sqlline</groupId>

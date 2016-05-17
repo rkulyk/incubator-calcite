@@ -38,6 +38,9 @@ import java.util.Map;
 public class RexProgramBuilder {
   //~ Instance fields --------------------------------------------------------
 
+  private static final org.slf4j.Logger LOGGER =
+      org.slf4j.LoggerFactory.getLogger(RexProgramBuilder.class);
+
   private final RexBuilder rexBuilder;
   private final RelDataType inputRowType;
   private final List<RexNode> exprList = new ArrayList<RexNode>();
@@ -69,6 +72,9 @@ public class RexProgramBuilder {
         registerInternal(RexInputRef.of(i, fields), false);
       }
     }
+
+    LOGGER.debug("RexProgramBuilder -  inputRowType :{}", inputRowType);
+    LOGGER.debug("RexProgramBuilder -  registered localRefList :{}", localRefList);
   }
 
   /**
@@ -271,6 +277,9 @@ public class RexProgramBuilder {
    */
   public RexLocalRef registerInput(RexNode expr) {
     final RexShuttle shuttle = new RegisterInputShuttle(true);
+
+    LOGGER.debug("registerInput : {}", expr);
+
     final RexNode ref = expr.accept(shuttle);
     return (RexLocalRef) ref;
   }
@@ -908,6 +917,11 @@ public class RexProgramBuilder {
             || RelOptUtil.eq("type1", input.getType(),
                 "type2", inputRowType.getFieldList().get(index).getType(),
                 true);
+      }
+
+      if (index >= localRefList.size()) {
+        LOGGER.error("Out of Range: index {}, localRefList.size {}", index, localRefList.size());
+        LOGGER.error("RexInput :{}. localRefList: {}", input, localRefList);
       }
 
       // Return a reference to the N'th expression, which should be
