@@ -65,7 +65,7 @@ public class FilterMergeRule extends RelOptRule {
     LOGGER.debug(" topFilter input's # of fields {}, rowType{}",
         topFilter.getInput().getRowType().getFieldCount(), topFilter.getInput().getRowType());
 
-    LOGGER.debug(" bottomFilter : {}", topFilter);
+    LOGGER.debug(" bottomFilter : {}", bottomFilter);
     LOGGER.debug(" bottomFilter's # of fields {}, rowType{}",
         bottomFilter.getRowType().getFieldCount(), bottomFilter.getRowType());
     LOGGER.debug(" bottomFilter input's # of fields {}, rowType{}",
@@ -75,7 +75,13 @@ public class FilterMergeRule extends RelOptRule {
     // so we can convert the two LogicalFilter conditions to directly
     // reference the bottom LogicalFilter's child
     RexBuilder rexBuilder = topFilter.getCluster().getRexBuilder();
+
+    LOGGER.debug(" creating bottom program");
+
     RexProgram bottomProgram = createProgram(bottomFilter);
+
+    LOGGER.debug(" creating top program");
+
     RexProgram topProgram = createProgram(topFilter);
 
     RexProgram mergedProgram =
@@ -83,6 +89,8 @@ public class FilterMergeRule extends RelOptRule {
             topProgram,
             bottomProgram,
             rexBuilder);
+
+    LOGGER.debug(" program merged");
 
     RexNode newCondition =
         mergedProgram.expandLocalRef(
